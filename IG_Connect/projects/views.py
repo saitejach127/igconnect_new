@@ -11,8 +11,16 @@ from authentication.models import *
 import datetime
 
 def projects(request):
-	projects = Project.objects.all();
 	response = {}
+	projects = Project.objects.all()
+	try:
+		likes = ProjectLike.objects.filter(user=request.user)
+		a = []
+		for i in likes:
+			a.append(i.project)
+		response["likes"] = a
+	except:
+		pass
 	response['projects'] = projects
 	if request.user.is_authenticated : 
 		response['myprojects'] = Project.objects.filter(user=request.user)
@@ -70,7 +78,7 @@ def addProject(request):
 			return redirect('/projects')
 
 	# response['contributors'] = User.objects.all().exclude(username=request.user.username);
-	response['contributors'] = Userprofile.objects.all().exclude(user=request.user)
+	response['contributors'] = Userprofile.objects.all().exclude(user=request.user).order_by('user__first_name')
 	 
 	return render(request,'projects/addProject.djt',response)
 
@@ -137,3 +145,26 @@ def deleteProject(request,projectname) :
 		print( "Project Doesn't exist Error" )
 	
 	return redirect('/projects')
+
+@login_required(login_url='/auth/login/')
+def projectLike(request, projectname):
+	user = request.user
+	project = Project.objects.get(projectName=projectname)
+	newLike = ProjectLike()
+	newLike.user = user
+	newLike.project = project
+	newLike.save()
+	project.likecount+=1
+	project.save()
+	print project.likecount
+	return redirect("/projects")
+
+@login_required(login_url='/auth/login/')
+def projectdislike(request, projectname):
+	user = request.user
+	pro = Project.objects.get(projectName=projectname)
+	project = ProjectLike.objects.get(project=pro, user=user)
+	project.delete()
+	pro.likecount-=1
+	pro.save()
+	return redirect("/projects")

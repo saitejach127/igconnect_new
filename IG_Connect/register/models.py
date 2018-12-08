@@ -9,7 +9,7 @@ from datetime import datetime
 class Form(models.Model):
     title = models.CharField(max_length=255)
     choice = models.BooleanField(default=False)
-    date = models.DateField(default=datetime.now())
+    date = models.DateField()
 
     def __str__(self):
         return self.title
@@ -25,3 +25,11 @@ class Registered(models.Model):
     def __str__(self):
         return self.title.title + "_" + str(self.title.choice)
 
+class SendInfo(models.Model):
+    name = models.CharField(max_length=255)
+    ctc = models.IntegerField()
+    comments = models.TextField()
+
+    def __str__(self):
+        return self.name
+        

@@ -23,8 +23,20 @@
 			<div class="row">
 				<div class="column">
 					<div class="ui segment">
-						<h2>{{event.eventName}}</h2>
+						<h2>{{event.name}}</h2>
 						<div class="ui divider"></div>
+						{% if event.cost %}
+						<div class="ui middle aligned animated selection list" >
+							<div class="item">
+								<div class="left floated content">
+							      <div class="header">Participation Cost :</div>
+							    </div>
+								<div class="right floated content">
+								  {{event.cost}}
+							    </div>
+							</div>
+						</div>
+						{%endif%}
 						<div class="ui middle aligned animated selection list" >
 							<div class="item">
 								<div class="left floated content">
@@ -42,6 +54,16 @@
 							    </div>
 								<div class="right floated content">
 								  {{event.timings}}
+							    </div>
+							</div>
+						</div>
+						<div class="ui middle aligned animated selection list" >
+							<div class="item">
+								<div class="left floated content">
+							      <div class="header">Venue :</div>
+							    </div>
+								<div class="right floated content">
+								  {{event.venue}}
 							    </div>
 							</div>
 						</div>
@@ -83,16 +105,7 @@
 
 						<br>
 						<div class="ui divider"></div>
-						<!-- <div class="ui equal width grid">
-							<div class="equal width row">
-								<div class="column">
-									<a class="ui fluid blue basic button" href="https://www.facebook.com/technozion.nitw"> <i class="facebook icon"></i> Like Our Page</a>
-								</div>
-								<div class="column">
-						  			<a class="ui fluid red basic button" href="mailto: vivek@technozion.org"> <i class="mail icon"></i>Mail Us</a>
-						  		</div>
-							</div>
-						</div> -->
+	
 						
 					</div>
 				</div>
@@ -111,8 +124,25 @@
 	        </div>
 	        {% endif %}
 
+	        
+
 			<div class="ui segment">
-				{% if event.isRegisterationOpen %}
+				{% if formOpen %}
+
+				{% if regRequest %}         			             
+		        <div class="eight wide column">
+		            <div class="ui message">
+		              <div class="header">
+		                Message
+		              </div>
+		              <p>
+		              {%autoescape off%}
+		              {{regRequest.message}}
+		              {%endautoescape%}
+		              </p>
+		            </div>
+		        </div>
+	            {% endif %}
 
 				<form action="/events/register/{{event.pk}}/" method="post" class="ui form">
 	            {% csrf_token %}
@@ -133,10 +163,25 @@
 	            </button>
 	            </center>
 	            </form>
-	            {% elif regRequest %}         			             
-		        <p>{{regRequest.message}}</p>
+	            {% elif regRequest %}
+	            <div class="eight wide column">
+		            <div class="ui message">
+		              <div class="header">
+		                Message
+		              </div>
+		              <p>{%autoescape off%}{{regRequest.message}}{%endautoescape%}</p>
+		            </div>
+		        </div>     			             
 	            {% else %}
-	            <p>Registeration for this event has been closed.</p>
+	            <div class="eight wide column">
+		            <div class="ui message">
+		              <div class="header">
+		                Message
+		              </div>
+		              <p>Registeration for this event has been closed.</p>
+		            </div>
+		        </div>
+	            
 	            {% endif %}
 			</div>
 		</div>

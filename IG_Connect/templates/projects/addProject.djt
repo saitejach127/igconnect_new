@@ -31,16 +31,20 @@
 					</div>
 					<div class="field">
 					    <label>Contributors ( Select Multiple )</label>
-					    <select multiple="multiple" name="contributorList" class="ui dropdown">
-					      <option value="">Select Category</option>
+					    <select multiple="multiple" name="contributorList" class="ui search dropdown">
+					      <option value="">Select Contributors</option>
 					      {% for person in contributors %}
 					      	<option value="{{person.user.username}}">{{person.user.first_name}}-{{person.regNum}}</option>
 					      {% endfor %}
 					 	</select>
 					</div>
 					<div class="field">
+						<label>Objective</label>
+						<textarea name="objective" rows="4" maxlength="2000"></textarea>
+					</div>
+					<div class="field">
 					    <label>Short Description</label>
-					    <input type="text" name="shortDesc" maxlength="100">
+					    <input type="text" name="shortDesc" maxlength="1000">
 					</div>
 					<div class="field">
 						<label>Technology / Materials Used</label>
@@ -51,18 +55,27 @@
 						<input type="text" name="endusers" maxlength="255">
 					</div>
 					<div class="field">
-						<label>Plans</label>
-						<textarea name="plans" rows="4" maxlength="1000"></textarea>
-					</div>
-					<div class="field">
 						<label>Project url( Enter github link, or any site url if available)</label>
 						<input type="text" name="projecturl"  maxlength="500">
 					</div>
-					<button type="button" id="phaseButton" class="btn btn-success">Add More Info</button><br><br>
+
+					<div class="field">
+						<label>Project Picture</label>
+						<div class="ui grid">
+							<div class="seven wide column">
+								<button type="button" id="projectPicbutton" class="ui icon blue button">
+								    <i class="cloud icon"></i>
+								    <input type="file" name="projectPicture" id="projectPicture">
+								</button>	
+							</div>
+						</div>
+					</div>
+
+					<button type="button" id="phaseButton" class="ui green button">Add More Info</button><br><br>
 					<div id="phase2" class="phasehide">
 					<div class="field">
-						<label>Objective</label>
-						<textarea name="objective" rows="4" maxlength="1000"></textarea>
+						<label>Plans</label>
+						<textarea name="plans" rows="4" maxlength="1000"></textarea>
 					</div>
 					<div class="field">
 						<label>Driving Force / Background</label>
@@ -83,17 +96,7 @@
 						<textarea name="awards" rows="4" maxlength="1000"></textarea>
 					</div>
 					
-					<div class="field">
-						<label>Project Picture</label>
-						<div class="ui grid">
-							<div class="seven wide column">
-								<button type="button" id="projectPicbutton" class="ui icon blue button">
-								    <i class="cloud icon"></i>
-								    <input type="file" name="projectPicture" id="projectPicture">
-								</button>	
-							</div>
-						</div>
-					</div>
+					
 					<div class="field">
 						<label>Branches Involved</label>
 						<input type="text" name="branches" maxlength="200" placeholder="CSE, ECE, ....">
@@ -129,10 +132,20 @@
 
 <script type="text/javascript">
 
+	var iscolap = false;
+
 	var but = document.getElementById("phaseButton");
 	but.onclick = function(){
 		var element = document.getElementById("phase2");
 		element.classList.toggle("phasehide");
+		if(iscolap){
+			but.innerHTML = "Add More";
+			iscolap = !iscolap;
+		} else {
+			but.innerHTML = "Colapse";
+			iscolap = !iscolap;
+		}
+
 	}
 </script>
 {% endblock %}

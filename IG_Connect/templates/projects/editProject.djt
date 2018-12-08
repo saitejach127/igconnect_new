@@ -24,14 +24,18 @@
 					</div>
 					<div class="field">
 					    <label>Contributors ( Select Multiple )</label>
-					    <select multiple="multiple" name="contributorList" class="ui dropdown" id="contibutorsSelectBox">
-					      <option value="">Select Category</option>
+					    <select multiple="multiple" name="contributorList" class="ui search dropdown" id="contibutorsSelectBox">
+					      <option value="">Select Contributors</option>
 					      {% for person in contributors %}
 					      	<option value="{{person.user.username}}" 
 					      	{% if person.user in project.contributorsList.all %} selected {% endif %}
 					      	>{{person.user.first_name}}-{{person.regNum}}</option>
 					      {% endfor %}
 					 	</select>
+					</div>
+					<div class="field">
+						<label>Objective</label>
+						<textarea name="objective" rows="4" maxlength="1000">{{project.objective}}</textarea>
 					</div>
 					<div class="field">
 					    <label>Short Description</label>
@@ -49,12 +53,9 @@
 						<label>Project url</label>
 						<input type="text" name="projecturl" value="{{ project.projecturl}}">
 					</div>
-					<button id="phaseButton" type="button" class="btn btn-success">Add More Info</button><br><br>
+
+					<button id="phaseButton" type="button" class="ui green button">More Info</button><br><br>
 					<div id="phase2" class="phasehide">
-					<div class="field">
-						<label>Objective</label>
-						<textarea name="objective" rows="4" maxlength="1000">{{project.objective}}</textarea>
-					</div>
 					<div class="field">
 						<label>Driving Force / Background</label>
 						<textarea name="drivingForce" rows="4" maxlength="1000">{{project.drivingForce}}</textarea>
@@ -112,7 +113,7 @@
 						<input type="file" name="projectpictures" id="projectpic" multiple hidden>
 					</div>-->
 					</div>
-					<hr><hr>
+					<hr>
 					<div class="field">
 						<center>
 							<br><button type="submit" class="ui large green button">Save Changes</button>
@@ -131,10 +132,19 @@
 {% block script %}
 
 <script type="text/javascript">
+
+	var iscolap = false;
 	var but = document.getElementById("phaseButton");
 	but.onclick = function(){
 		var phase2 = document.getElementById("phase2");
 		phase2.classList.toggle("phasehide");
+		if(iscolap){
+			but.innerHTML = "Add More";
+			iscolap = !iscolap;
+		} else {
+			but.innerHTML = "Less Info";
+			iscolap = !iscolap;
+		}
 	}
 </script>
 

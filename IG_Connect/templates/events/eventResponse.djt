@@ -1,4 +1,4 @@
-{% extends "events/base.djt" %}
+{% extends "events/adminbase.djt" %}
 {% load staticfiles %}
 
 {% block head %}
@@ -27,11 +27,15 @@
 	        	</a>
 
 			</div>
+			<br>
+			<div class="one wide column">
+      		<a class="ui facebook button" href="/events/downloadresponse/{{event.pk}}" target="_blank">Download</a>
+      	</div>
 	        </center>
 	    </div>
 	    <div class="fourteen wide column">
 	    	<div class="ui fluid center aligned 	segment">
-	        	<h3>{{event.eventName}}</h3>
+	        	<h3>{{event.name}}</h3>
 
 	        </div>
 	        <table class="ui unstackable striped celled  padded inverted table" id="responseTable">
@@ -43,6 +47,9 @@
                     <th>Last Name</th>
                     <th>Course</th>
                     <th>Status</th>
+                    {% if teamName %}
+                    <th>Team Name</th>
+                    {% endif %}
                     <th>Response</th>
                     <th>Accept</th>
                     <th>Reject</th>
@@ -57,13 +64,16 @@
 	        		<td>{{response.user.last_name}}</td>
 	        		<td>{{response.user.profile.course}}</td>
 	        		<td id="status{{response.pk}}">{{response.get_status_display}}</td>
+	        		{% if teamName %}
+                    <td>{{response.teamName}}</td>
+                    {% endif %}
 	        		<td>
 	        			<button class="ui blue button viewResponse"
 	        					data-regno="{{response.user.profile.regNum}}"
 	        					data-name="{{response.user.first_name}} {{response.user.last_name}}"
 	        					data-pk="{{response.pk}}"
 	        					data-username = "{{response.user.username}}">
-						 	View Response
+						 	View
 						</button>
 					</td>
 					<td>
@@ -88,6 +98,7 @@
 	        </table>
 	        
 	    </div>
+	    
 	</div>
 </div>
 <div class="ui modal" id="responseModal">
